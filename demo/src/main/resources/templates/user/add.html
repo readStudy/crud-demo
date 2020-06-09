@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Add User</title>
+        <style type="text/css">
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>添加User資料</h1>
+        <form action="#" th:action="@{/user/add}" th:object="${user}" method="post">
+            <input type="text" th:field="*{username}" placeholder="Username">
+            <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error</span>
+            <br>
+            <input type="text" th:field="*{email}"placeholder="Email">
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error</span>
+            <br>
+            <input type="text" th:field="*{password}"placeholder="Password">
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</span>
+            <br>
+            <input type="submit" value="添加">   
+        </form>
+
+    </body>
+</html>

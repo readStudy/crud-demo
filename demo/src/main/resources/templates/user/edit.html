@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Edit User</title>
+        <style type="text/css">
+            label {
+                display: inline-block;
+                width: 100px;
+                text-align: right;
+            }
+            input {
+                vertical-align: top;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>修改User資料</h1>
+        <form action="#" th:action="@{/user/edit}" th:object="${user}" method="post">
+            <label for="Id">Id</label>
+            <input type="text" th:field="*{id}" placeholder="Id" readonly style="background-color:gray;">
+            <br>
+            <label for="Username">Username</label>
+            <input type="text" th:field="*{username}" placeholder="Username" readonly style="background-color:gray;">
+            <br>
+            <label for="email">Email</label>
+            <input type="text" th:field="*{email}"placeholder="Email">
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error</span>
+            <br>
+            <label for="Password">Password</label>
+            <input type="text" th:field="*{password}"placeholder="Password"> 
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</span>
+            <br>                
+            
+            <input type="submit" value="修改">   
+        </form>
+
+    </body>
+</html>
