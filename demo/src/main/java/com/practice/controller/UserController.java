@@ -33,7 +33,7 @@ public class UserController {
 		
 		model.addAttribute("users", users);
 		
-		return "/index";
+		return "index";
 	}
 	
 	@GetMapping("/user/add")
@@ -41,7 +41,7 @@ public class UserController {
 		
 		model.addAttribute("user", new CreateUserDto());
 		
-		return "/user/add";
+		return "user/add";
 	}
 	
 	@PostMapping("/user/add")
@@ -66,7 +66,7 @@ public class UserController {
 			model.addAttribute("user", user);
 		});
 		
-		return "/user/edit";
+		return "user/edit";
 	}
 	
 	@PostMapping("/user/edit")
