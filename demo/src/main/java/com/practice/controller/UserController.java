@@ -1,7 +1,6 @@
 package com.practice.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.practice.common.NumberUtils;
 import com.practice.dto.CreateUserDto;
 import com.practice.dto.EditUserDto;
 import com.practice.entity.User;
@@ -27,13 +27,38 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping(value={"/", "/index"})
-	public String list(Model model) {
+	public String index(Model model) {
 		
 		List<User> users = userService.findAll();
 		
 		model.addAttribute("users", users);
 		
 		return "index";
+	}
+	
+	@GetMapping("/list")
+	public String list(Model model,
+			@RequestParam(name = "page", defaultValue = "1") Integer currentPage, 
+		    @RequestParam(name = "size", defaultValue = "2") Integer size,
+		    @RequestParam(name = "searchBy", defaultValue = "") String searchBy,
+		    @RequestParam(name = "searchValue", defaultValue = "") String searchValue) {
+		
+		if(size > 5) { size=5; }
+		
+		if("id".equals(searchBy)) {
+			if(!NumberUtils.isNumeric(searchValue)) {
+				searchValue = "1";
+			}
+		}
+		
+		Page<User> users = userService.findAllBy(PageRequest.of(currentPage - 1, size), searchBy, searchValue);
+		
+		model.addAttribute("users", users);
+		
+		model.addAttribute("searchBy", searchBy);
+		model.addAttribute("searchValue", searchValue);
+		
+		return "user/list";
 	}
 	
 	@GetMapping("/user/add")
@@ -76,12 +101,7 @@ public class UserController {
 			return "user/edit";
 		}
 		
-		userService.findById(editUser.getId()).ifPresent(user->{
-			user.setEmail(editUser.getEmail());
-			user.setPassword(editUser.getPassword());
-			
-			userService.save(user);
-		});
+		userService.update(editUser);
 		
 		return "redirect:/";
 	}

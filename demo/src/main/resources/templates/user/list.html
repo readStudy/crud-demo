@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Demo</title>
+<style type="text/css">
+table, th, td {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+/* Pagination links */
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+
+/* Style the active/current link */
+.pagination a.active {
+    background-color: dodgerblue;
+    color: white;
+}
+
+/* Add a grey background color on mouse-over */
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
+</style>
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+	crossorigin="anonymous">
+</script>
+</head>
+<body>
+	<h1>User Table</h1>
+	<a href="/">返回首頁</a>
+	<div>
+	    <form action="/list">
+	        <select name="searchBy">
+	            <option th:selected="${searchBy=='id'}" th:value="id" th:text="ID"></option>
+	            <option th:selected="${searchBy=='username'}" th:value="username" th:text="Username"></option>
+	        </select>
+	        <input type="text" name="searchValue" th:value="${searchValue}">
+	        <input type="submit" value="搜尋">
+	    </form>
+	</div>
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Username</th>
+				<th>Email</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="user : ${users.content}">
+				<td th:text="${user.getId()}"></td>
+				<td th:text="${user.getUsername()}"></td>
+				<td th:text="${user.getEmail()}"></td>
+				<td><a th:href="@{/user/edit(id=${user.getId()})}">修改</a> 
+				    <a href="#" th:onclick="|deleteUser('${user.getId()}')|">刪除</a></td>
+			</tr>
+		</tbody>
+	</table>
+	
+    <div th:if="${users.totalPages > 0}" class="pagination"
+         th:each="pageNumber : ${#numbers.sequence(1,users.totalPages)}">
+         <a th:href="@{/list(size=${users.size}, page=${pageNumber}, searchBy=${param.searchBy}, searchValue=${param.searchValue})}"
+            th:text=${pageNumber}
+            th:class="${pageNumber} == ${users.number+1} ? 'active' : ''">
+         </a>
+    </div>
+	
+</body>
+
+<script th:inline="javascript">
+	function deleteUser(id) {
+		var check = confirm("確定刪除 id= " + id + " 的資料嗎?");
+		if (check == true) {
+			$.ajax({
+				type : "POST",
+				url : "/user/delete?id="+id,
+			    success : function(data) {
+			    	location.href = '/';
+			    }
+			});
+		}
+	}
+</script>
+
+</html>

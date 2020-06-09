@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import com.practice.dto.EditUserDto;
 import com.practice.entity.User;
 
 public interface UserService {
@@ -23,5 +25,9 @@ public interface UserService {
 	void deleteById(Integer id);
 
 	Page<User> findAll(Pageable pageable);
+
+	Page<User> findAllBy(Pageable pageable, String searchBy, String searchValue);
+	
+	Optional<User> update(EditUserDto editUser);
 
 }
