@@ -43,7 +43,7 @@ public class UserController {
 		    @RequestParam(name = "searchBy", defaultValue = "") String searchBy,
 		    @RequestParam(name = "searchValue", defaultValue = "") String searchValue) {
 		
-		if(size > 5) { size=5; }
+		if(size > 5 || size < 1) { size=5; }
 		
 		if("id".equals(searchBy) && !searchValue.isEmpty()) {
 			if(!NumberUtils.isNumeric(searchValue)) {
