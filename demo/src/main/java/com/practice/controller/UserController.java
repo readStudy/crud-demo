@@ -45,7 +45,7 @@ public class UserController {
 		
 		if(size > 5) { size=5; }
 		
-		if("id".equals(searchBy)) {
+		if("id".equals(searchBy) && !searchValue.isEmpty()) {
 			if(!NumberUtils.isNumeric(searchValue)) {
 				searchValue = "1";
 			}
