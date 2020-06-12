@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.practice.common.NumberUtils;
-import com.practice.dto.CreateUserDto;
-import com.practice.dto.EditUserDto;
+import com.practice.dto.UserDto;
 import com.practice.entity.User;
 import com.practice.service.UserService;
 
@@ -64,13 +63,13 @@ public class UserController {
 	@GetMapping("/user/add")
 	public String displayAddUser(Model model) {
 		
-		model.addAttribute("user", new CreateUserDto());
+		model.addAttribute("user", new UserDto());
 		
 		return "user/add";
 	}
 	
 	@PostMapping("/user/add")
-	public String add(@Validated @ModelAttribute("user")CreateUserDto newUser, BindingResult result) {
+	public String add(@Validated @ModelAttribute("user")UserDto newUser, BindingResult result) {
 		
 		if(userService.findByUsername(newUser.getUsername()).isPresent()) {
 			result.rejectValue("username", "error.username" ,newUser.getUsername() + " 已經使用，請換一個使用。");
@@ -80,7 +79,7 @@ public class UserController {
 			return "user/add";
 		}
 		
-		userService.save(CreateUserDto.dtoToUser(newUser));
+		userService.save(UserDto.dtoToUser(newUser));
 		return "redirect:/";
 	}
 	
@@ -95,7 +94,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/user/edit")
-	public String editUser(@Validated @ModelAttribute("user")EditUserDto editUser, BindingResult result) {
+	public String editUser(@Validated @ModelAttribute("user")UserDto editUser, BindingResult result) {
 		
 		if(result.hasErrors()) {
 			return "user/edit";

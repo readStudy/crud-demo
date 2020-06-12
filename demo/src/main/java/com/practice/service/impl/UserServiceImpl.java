@@ -14,7 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.practice.dto.EditUserDto;
+import com.practice.dto.UserDto;
 import com.practice.entity.User;
 import com.practice.repository.UserRepository;
 import com.practice.service.UserService;
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public Optional<User> update(EditUserDto editUser) {
+	public Optional<User> update(UserDto editUser) {
 		userRepository.findById(editUser.getId()).map(user->{
 			user.setEmail(editUser.getEmail());
 			user.setPassword(editUser.getPassword());

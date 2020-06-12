@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import com.practice.dto.EditUserDto;
+import com.practice.dto.UserDto;
 import com.practice.entity.User;
 
 public interface UserService {
@@ -28,6 +28,6 @@ public interface UserService {
 
 	Page<User> findAllBy(Pageable pageable, String searchBy, String searchValue);
 	
-	Optional<User> update(EditUserDto editUser);
+	Optional<User> update(UserDto editUser);
 
 }
