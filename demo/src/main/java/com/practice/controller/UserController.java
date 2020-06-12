@@ -94,7 +94,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/user/edit")
-	public String editUser(@Validated @ModelAttribute("user")UserDto editUser, BindingResult result) {
+	public String editUser(@Validated({UserDto.EditUser.class}) @ModelAttribute("user")UserDto editUser, BindingResult result) {
 		
 		if(result.hasErrors()) {
 			return "user/edit";

@@ -2,6 +2,7 @@ package com.practice.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import com.practice.entity.User;
@@ -10,7 +11,12 @@ import lombok.Data;
 
 @Data
 public class UserDto {
+	
+	public interface NewUser{}
+	
+	public interface EditUser{}
 
+	@NotNull(groups = {EditUser.class})
 	private Integer id;
 	@NotBlank
 	private String username;
