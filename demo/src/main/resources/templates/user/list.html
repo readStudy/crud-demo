@@ -116,15 +116,20 @@
 </body>
 
 <script th:inline="javascript">
-	function deleteUser(id) {
-		jQuery.ajax({
-			type : "POST",
-			url : "/user/delete?id=" + id,
-			success : function(data) {
-				location.href = '/';
-			}
-		});
-	};
+    function deleteUser(id) {
+	    jQuery.ajax({
+		    type : "POST",
+		    url : "/user/delete?id=" + id,
+		    success : function(data) {
+			    $('#modal_message').text(data.message + " 等待五秒返回首頁 ");
+			    $('#modal_message').append("<a href='/'>不等待，直接返回</a>");
+			    window.setTimeout( function() {
+				    location.href = '/';
+			    }, 5000 );
+			
+		    }
+	    });
+    };
 	$('#deleteModal').on('show.bs.modal', function(e) {
 		var button = $(e.relatedTarget);
 		var id = button.data('id');

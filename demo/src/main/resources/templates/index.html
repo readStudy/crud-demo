@@ -23,6 +23,7 @@ table, th, td {
 	    <h1>User 列表</h1>
 		<a class="btn btn-primary" href=/user/add>添加User</a> <a
 			class="btn btn-secondary" href=/list>分頁與搜尋</a>
+	    <h2 th:if="${not #strings.isEmpty(message)}" class="alert alert-success" role="alert" th:text="${message}"></h2>
 	</div>
 	<div class="container">
 		<table class="table table-sm">
@@ -59,7 +60,7 @@ table, th, td {
         </button>
       </div>
       <div class="modal-body">
-        <p>確定刪除嗎？</p>
+        <p id="modal_message">確定刪除嗎？</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -77,7 +78,12 @@ table, th, td {
 			type : "POST",
 			url : "/user/delete?id=" + id,
 			success : function(data) {
-				location.href = '/';
+				$('#modal_message').text(data.message + " 等待五秒返回首頁 ");
+				$('#modal_message').append("<a href='/'>不等待，直接返回</a>");
+				window.setTimeout( function() {
+					location.href = '/';
+				}, 5000 );
+				
 			}
 		});
 	};

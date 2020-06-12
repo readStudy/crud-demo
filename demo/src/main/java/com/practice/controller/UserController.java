@@ -1,6 +1,8 @@
 package com.practice.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.practice.common.NumberUtils;
 import com.practice.dto.UserDto;
@@ -69,7 +73,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/user/add")
-	public String add(@Validated @ModelAttribute("user")UserDto newUser, BindingResult result) {
+	public String add(@Validated @ModelAttribute("user")UserDto newUser, BindingResult result, RedirectAttributes redirectAttributes) {
 		
 		if(userService.findByUsername(newUser.getUsername()).isPresent()) {
 			result.rejectValue("username", "error.username" ,newUser.getUsername() + " 已經使用，請換一個使用。");
@@ -79,7 +83,10 @@ public class UserController {
 			return "user/add";
 		}
 		
-		userService.save(UserDto.dtoToUser(newUser));
+		if(userService.save(UserDto.dtoToUser(newUser)) != null) {
+			redirectAttributes.addFlashAttribute("message", "添加使用者成功");
+		}
+		
 		return "redirect:/";
 	}
 	
@@ -94,27 +101,33 @@ public class UserController {
 	}
 	
 	@PostMapping("/user/edit")
-	public String editUser(@Validated({UserDto.EditUser.class}) @ModelAttribute("user")UserDto editUser, BindingResult result) {
+	public String editUser(@Validated({UserDto.EditUser.class}) @ModelAttribute("user")UserDto editUser, BindingResult result, RedirectAttributes redirectAttributes) {
 		
 		if(result.hasErrors()) {
 			return "user/edit";
 		}
 		
-		userService.update(editUser);
+		redirectAttributes.addFlashAttribute("message", "修改使用者成功");
 		
 		return "redirect:/";
 	}
 	
+	@ResponseBody
 	@PostMapping("/user/delete")
-	public String deleteUser(@RequestParam Integer id) {
+	public Map<String, String> deleteUser(@RequestParam Integer id, RedirectAttributes redirectAttributes) {
+		
+		Map<String, String> map = new HashMap<>();
 		
 		if(id == null) {
-			return "redirect:/";
+			map.put("message", "刪除使用者失敗");
+			return map;
 		}
 		
 		userService.deleteById(id);
 		
-		return "redirect:/";
+		map.put("message", "刪除使用者成功");
+		
+		return map;
 	}
 
 }

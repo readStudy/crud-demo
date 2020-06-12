@@ -18,7 +18,7 @@ public interface UserService {
 	
 	Optional<User> findByEmail(String email);
 
-	void save(User dtoToUser);
+	User save(User dtoToUser);
 
 	Optional<User> findById(Integer id);
 
