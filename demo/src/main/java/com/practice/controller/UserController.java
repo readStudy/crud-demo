@@ -106,7 +106,7 @@ public class UserController {
 		if(result.hasErrors()) {
 			return "user/edit";
 		}
-		
+		userService.update(editUser);
 		redirectAttributes.addFlashAttribute("message", "修改使用者成功");
 		
 		return "redirect:/";
