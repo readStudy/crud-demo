@@ -3,6 +3,8 @@
 	xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Demo</title>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 <style type="text/css">
 table, th, td {
 	border: 1px solid black;
@@ -73,6 +75,14 @@ table, th, td {
 </body>
 
 <script th:inline="javascript">
+    $(function () {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function(e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+    });
+
 	function deleteUser(id) {
 		jQuery.ajax({
 			type : "POST",
