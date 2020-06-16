@@ -26,7 +26,7 @@ public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
 		
 		log.info("{} 登出成功", authentication.getName());
 		
-		redirectStrategy.sendRedirect(request, response, "/login");
+		redirectStrategy.sendRedirect(request, response, "/user/login?logout");
 		
 	}
 

@@ -32,8 +32,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     	        .deleteCookies("JSESSIONID")
     	        .logoutSuccessHandler(myLogoutSuccessHandler);
     	
+    	
         httpSecurity.authorizeRequests()
-                .antMatchers("/login").permitAll();
+            .antMatchers("/user/login**", "/user/perform_login**").permitAll()
+            .anyRequest()
+            .authenticated();
     }
     
     @Override
