@@ -23,8 +23,10 @@ table, th, td {
 <body>
 	<div class="container">
 	    <h1>User 列表</h1>
+	    
 		<a class="btn btn-primary" href=/user/add>添加User</a> <a
 			class="btn btn-secondary" href=/list>分頁與搜尋</a>
+		<a class="btn btn-primary" href=/user/logout>登出</a>	
 	    <h2 th:if="${not #strings.isEmpty(message)}" class="alert alert-success" role="alert" th:text="${message}"></h2>
 	</div>
 	<div class="container">
