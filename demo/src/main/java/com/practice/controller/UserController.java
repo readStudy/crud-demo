@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.practice.common.NumberUtils;
 import com.practice.dto.UserDto;
+import com.practice.dto.UserDto.EditUser;
 import com.practice.entity.User;
 import com.practice.service.UserService;
 
@@ -101,7 +102,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/user/edit")
-	public String editUser(@Validated({UserDto.EditUser.class}) @ModelAttribute("user")UserDto editUser, BindingResult result, RedirectAttributes redirectAttributes) {
+	public String editUser(@Validated(EditUser.class) @ModelAttribute("user")UserDto editUser, BindingResult result, RedirectAttributes redirectAttributes) {
 		
 		if(result.hasErrors()) {
 			return "user/edit";

@@ -18,13 +18,13 @@ public class UserDto {
 
 	@NotNull(groups = {EditUser.class})
 	private Integer id;
-	@NotBlank
+	@NotBlank(groups = {EditUser.class, NewUser.class})
 	private String username;
-	@NotBlank
-	@Pattern(regexp="^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,30}$",message="密碼為至少一大寫字母，至少一小寫字母，至少一數字，全長最少八碼") 
+	@NotBlank(groups = {EditUser.class, NewUser.class})
+	@Pattern(regexp="^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,30}$",message="密碼為至少一大寫字母，至少一小寫字母，至少一數字，全長最少八碼", groups = {EditUser.class, NewUser.class}) 
 	private String password;
-	@NotBlank
-	@Email
+	@NotBlank(groups = {EditUser.class, NewUser.class})
+	@Email(groups = {EditUser.class, NewUser.class})
 	private String email;
 	
 	
