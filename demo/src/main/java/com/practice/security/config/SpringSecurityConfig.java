@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import com.practice.security.handler.MyAuthenctiationFailureHandler;
 import com.practice.security.handler.MyLogoutSuccessHandler;
 
 @Configuration
@@ -19,6 +20,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private MyLogoutSuccessHandler myLogoutSuccessHandler;
+	
+	@Autowired
+	private MyAuthenctiationFailureHandler myAuthenctiationFailureHandler;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -28,6 +32,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     	        .loginPage("/user/login")
     	        .loginProcessingUrl("/user/perform_login")
     	        .failureUrl("/user/login?error")
+    	        .failureHandler(myAuthenctiationFailureHandler)
     	.and()
     	    .logout()
     	        .logoutUrl("/user/perform_logout")
