@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.practice.common.NumberUtils;
 import com.practice.dto.UserDto;
 import com.practice.dto.UserDto.EditUser;
+import com.practice.dto.UserDto.NewUser;
 import com.practice.entity.User;
 import com.practice.service.UserService;
 
@@ -74,7 +75,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/user/add")
-	public String add(@Validated @ModelAttribute("user")UserDto newUser, BindingResult result, RedirectAttributes redirectAttributes) {
+	public String add(@Validated(NewUser.class) @ModelAttribute("user")UserDto newUser, BindingResult result, RedirectAttributes redirectAttributes) {
 		
 		if(userService.findByUsername(newUser.getUsername()).isPresent()) {
 			result.rejectValue("username", "error.username" ,newUser.getUsername() + " 已經使用，請換一個使用。");
