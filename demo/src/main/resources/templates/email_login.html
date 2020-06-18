@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>登入</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous">
+  </head>
+  <body>
+     <p class="alert alert-success" role="alert" th:unless="${emailCode == null}" th:text="你的登入code為 +${emailCode}"></p> 
+     <div class="container">
+      <form action="/authentication/email" method="POST">
+        <input type="hidden"  th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <p>使用Email收到的Code登入</p>
+        <p>
+          <label for="username" class="sr-only">Username</label>
+          <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+        </p>        
+        <p>
+          <label for="email_code" class="sr-only">Code</label>
+          <input type="text" id="email_code" name="email_code" class="form-control" placeholder="Code" required autofocus>
+        </p>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">登入</button>
+      </form> 
+</div>
+</body></html>
