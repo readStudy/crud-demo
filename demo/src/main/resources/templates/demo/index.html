@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0042)http://localhost:8080/NTMC/co/timezone.jsp -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js" th:src="@{/js/jquery-3.5.1.js}"></script>
+<style type="text/css">
+.disabled {
+	pointer-events: none;
+	opacity: 0.6;
+}
+
+.ui-selected {
+	background: red;
+}
+
+.inuse {
+	background: #ddc9dd;
+}
+
+.un {
+	background: #a88be5;
+}
+
+.prev {
+	background: #f7f6c8;
+}
+
+.timepass {
+	background: #383838;
+}
+
+.admin {
+	background: #c9efc6;
+}
+</style>
+</head>
+
+<body>
+
+
+	<div>
+		時段 Time: <span>最多得連續選擇8個時段</span>
+	</div>
+
+	<ol id="selectable2">
+
+		<li id="0" class="ui-state-default  ">08:00-08:30</li>
+
+		<li id="1" class="ui-state-default  ">08:30-09:00</li>
+
+		<li id="2" class="ui-state-default  ">09:00-09:30</li>
+
+		<li id="3" class="ui-state-default  ">09:30-10:00</li>
+
+		<li id="4" class="ui-state-default  ">10:00-10:30</li>
+
+		<li id="5" class="ui-state-default  ">10:30-11:00</li>
+
+		<li id="6" class="ui-state-default  ">11:00-11:30</li>
+
+		<li id="7" class="ui-state-default  ">11:30-12:00</li>
+
+		<li id="8" class="ui-state-default  ">12:00-12:30</li>
+
+		<li id="9" class="ui-state-default  ">12:30-13:00</li>
+
+		<li id="10" class="ui-state-default  ">13:00-13:30</li>
+
+		<li id="11" class="ui-state-default  ">13:30-14:00</li>
+
+		<li id="12" class="ui-state-default disabled inuse">14:00-14:30
+			disabled inuse</li>
+
+		<li id="13" class="ui-state-default disabled inuse">14:30-15:00
+			disabled inuse</li>
+
+		<li id="14" class="ui-state-default disabled inuse">15:00-15:30
+			disabled inuse</li>
+
+		<li id="15" class="ui-state-default  ">15:30-16:00</li>
+
+		<li id="16" class="ui-state-default  ">16:00-16:30</li>
+
+		<li id="17" class="ui-state-default  ">16:30-17:00</li>
+
+		<li id="18" class="ui-state-default  ">17:00-17:30</li>
+
+		<li id="19" class="ui-state-default  ">17:30-18:00</li>
+
+		<li id="20" class="ui-state-default  ">18:00-18:30</li>
+
+		<li id="21" class="ui-state-default  ">18:30-19:00</li>
+
+		<li id="22" class="ui-state-default  ">19:00-19:30</li>
+
+		<li id="23" class="ui-state-default  ">19:30-20:00</li>
+
+		<li id="24" class="ui-state-default  ">20:00-20:30</li>
+
+		<li id="25" class="ui-state-default  ">20:30-21:00</li>
+
+		<li id="26" class="ui-state-default  ">21:00-21:30</li>
+
+		<li id="27" class="ui-state-default  ">21:30-22:00</li>
+
+	</ol>
+
+
+	<input type="button" value="下一步" class="btn"
+		onclick="goToSetp1_1(&#39;2020-05-27&#39;,&#39;1&#39;,&#39;20200526180412822-16675bd0-d11f-418f-9dda-22313743fba5&#39;);">
+
+	<script type="text/javascript">
+
+function containDisabled(startId, endId) {
+    var i = 0;
+    for(i=startId; i < endId; i++) {
+        if($('#'+i).hasClass('disabled')) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// 用來找出最小選擇的id，主要是要在當使用者選擇超過時限時用來重新設定 startId
+function findMinSelectedId() {
+    var ids = $("li.ui-selected").map(function() {
+        return $(this).attr("id");
+    }).get();
+    return Math.min.apply( Math, ids );
+}
+
+//用來找出最大選擇的id，主要是要在當使用者選擇超過時限時用來重新設定 endId
+function findMaxSelectedId() {
+    var ids = $("li.ui-selected").map(function() {
+        return $(this).attr("id");
+    }).get();
+    return Math.max.apply( Math, ids );
+}
+
+var startId = -1;
+var endId = -1;
+
+// 這邊要從新設定id，因為id在取消選
+function resetIds() {
+    startId = -1;
+    endId = -1;
+}
+
+$("#selectable2").on("click","li.ui-state-default", function(event) {  
+
+    if($(this).hasClass('ui-selected')){  // 點擊已經選取的區塊
+        if(parseInt(this.id, 10) === startId) {
+            
+            if(startId === endId) {
+                resetIds();
+            } else {
+                startId++;
+            }
+            $(this).removeClass('ui-selected');
+        } else if(parseInt(this.id, 10) === endId) {
+
+            if(startId === endId) {
+                resetIds();
+            } else {
+                endId--; 
+            }
+            $(this).removeClass('ui-selected');
+        } else {
+            alert('選擇時段不連續，請重新選');
+        }
+    } else {   // 點擊未選取的區塊
+    
+        if(startId === -1 && endId === -1) { // 第一次點擊
+            startId = parseInt(this.id, 10);
+            $(this).addClass('ui-selected');
+        } else if(startId !== -1 && endId === -1) { // 第二次點擊
+            endId = parseInt(this.id, 10);
+        } else if(startId !== -1 && endId !== -1)  { // 二次之後點擊
+            if(parseInt(this.id, 10) < startId) {
+                startId = parseInt(this.id, 10);
+            } else if(parseInt(this.id, 10) > endId){
+                endId = parseInt(this.id, 10);
+            }
+        }
+    
+        if(startId !== -1 && endId !== -1) {
+        	    
+            if(startId > endId) {
+                // swap two integer
+                [startId, endId] = [endId, startId];
+            }
+        
+            if((endId - startId) >= (4*2) ) {
+                alert('超過時段上限');
+                startId = findMinSelectedId();
+                endId = findMaxSelectedId();
+                    
+            } else if(containDisabled(startId, endId)) { 
+                alert('選擇時段含有已使用的部分，請重新選擇');
+                startId = findMinSelectedId();
+                endId = findMaxSelectedId();
+            } else {
+                $('li').slice(parseInt(startId, 10), parseInt(endId, 10)+1).addClass('ui-selected'); 
+            }
+        }
+    }
+});
+
+function goToSetp1_1(rev4date,roomLoc,roomSysId) {
+    var timezoneList = $("li.ui-selected").map(function() {
+        return $(this).text().trim();
+    }).get();
+    
+    if(timezoneList.length === 0) {
+        alert("沒有選擇時段，請選擇！");
+        return false;
+    }
+    
+    $("#selmember").load("step1_1.jsp?rev4date="+rev4date+"&roomLoc="+roomLoc+"&roomSysId="+roomSysId+"&timezones="+JSON.stringify(timezoneList));
+}
+
+</script>
+
+</body>
+</html>
